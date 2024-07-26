@@ -9,7 +9,8 @@ apt update
 # Install applications
 apt install -y \
 	  terminator\
-	  ncdu
+	  ncdu\
+	  gitk
 
 # Install PyCharm Community Edition using snap
 snap install pycharm-community --classic
