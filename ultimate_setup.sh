@@ -8,12 +8,13 @@ apt update
 
 # Install applications
 apt install -y \
-	  terminator\
-	  ncdu\
+	  terminator \
+	  ncdu \
 	  gitk
 
 # Install PyCharm Community Edition using snap
 snap install pycharm-community --classic
+snap install gitkraken --classic
 
 
 # Add aliases
