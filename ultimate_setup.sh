@@ -51,5 +51,12 @@ else
 fi
 
 echo "Source .bashrc if you want to see the change or just open a new terminal"
- 
+
+# Add terminator config 
+echo $.
+cp "$PWD/resources/terminator/trees.jpg" "/home/$SUDO_USER/.config/terminator/"
+cp "$PWD/resources/terminator/config" "/home/$SUDO_USER/.config/terminator/"
+
+
+
 echo "Installation complete!"
