@@ -71,6 +71,8 @@ echo $.
 cp "$PWD/../resources/terminator/trees.jpg" "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/config" "/home/$SUDO_USER/.config/terminator/"
 
-
+# Set git config
+git config --global user.email "maxhol@hotmail.fr"
+git config --global user.name "Max"
 
 echo "Installation complete!"
