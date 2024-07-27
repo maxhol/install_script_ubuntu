@@ -11,12 +11,13 @@ apt install -y \
 	  terminator \
 	  ncdu \
 	  gitk \
-	  nvtop
+	  nvtop \
+	  nautilus
 
 # Install PyCharm Community Edition using snap
 snap install pycharm-community --classic
 snap install gitkraken --classic
-
+snap install brave
 
 # Add aliases
 ALIAS_TO_ADD_1='alias pycharm="pycharm-community"'
