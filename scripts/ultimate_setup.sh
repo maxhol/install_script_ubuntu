@@ -27,6 +27,7 @@ apt install -y \
 snap install pycharm-community --classic
 snap install gitkraken --classic
 snap install brave
+snap install bitwarden
 
 # Add aliases
 ALIAS_TO_ADD_1='alias pycharm="pycharm-community"'
