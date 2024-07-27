@@ -12,7 +12,16 @@ apt install -y \
 	  ncdu \
 	  gitk \
 	  nvtop \
-	  nautilus
+	  nautilus \
+	  #dep for gitkraken
+	  alsa-topology-conf \
+	  alsa-ucm-conf \
+	  libasound2 \
+	  libasound2-data \
+	  libgbm1 \
+	  libwayland-server0
+	  #----------------
+
 
 # Install PyCharm Community Edition using snap
 snap install pycharm-community --classic
