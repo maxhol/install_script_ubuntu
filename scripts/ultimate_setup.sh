@@ -13,6 +13,7 @@ apt install -y \
 	  gitk \
 	  nvtop \
 	  nautilus \
+	  zsh \
 	  #dep for gitkraken
 	  alsa-topology-conf \
 	  alsa-ucm-conf \
@@ -29,54 +30,85 @@ snap install gitkraken --classic
 snap install brave
 snap install bitwarden
 
+# Make zsh default shell 
+# Get the path to Zsh
+ZSH_PATH=$(which zsh)
+
+# Check if Zsh is in /etc/shells
+if ! grep -q "$ZSH_PATH" /etc/shells; then
+    echo "Adding Zsh to /etc/shells..."
+    echo "$ZSH_PATH" | sudo tee -a /etc/shells > /dev/null
+fi
+
+# Change the default shell to Zsh
+if sudo -u $SUDO_USER chsh -s "$ZSH_PATH"; then
+    echo "Default shell changed to Zsh. Please log out and log back in for the changes to take effect."
+else
+    echo "Failed to change the default shell. Please try again or change it manually."
+    exit 1
+fi
+
+
+# Install Oh-my-zsh
+sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+
 # Add aliases
 ALIAS_TO_ADD_1='alias pycharm="pycharm-community"'
 ALIAS_TO_ADD_2='alias python="python3"'
 
 # Add the line to .bashrc if it's not already there
-if ! grep -qF "$ALIAS_TO_ADD_1" "/home/$SUDO_USER/.bashrc"; then
-  echo "$ALIAS_TO_ADD_1" >> "/home/$SUDO_USER/.bashrc"
+if ! grep -qF "$ALIAS_TO_ADD_1" "/home/$SUDO_USER/.zshrc"; then
+  echo "$ALIAS_TO_ADD_1" >> "/home/$SUDO_USER/.zshrc"
   echo "pycharm alias added to .bashrc"
-elif ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.bashrc"; then
-  echo "$ALIAS_TO_ADD_2" >> "/home/$SUDO_USER/.bashrc"
-  echo "python alias added to .bashrc"
+elif ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.zshrc"; then
+  echo "$ALIAS_TO_ADD_2" >> "/home/$SUDO_USER/.zshrc"
+  echo "python alias added to .zshrc"
 else
-  echo "Alias already exists in .bashrc"
+  echo "Alias already exists in .zshrc"
 fi
 
-# Addition to .bashrc
-# Command to add to .bashrc
-git_prompt='
-# Git branch in prompt
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '"'"'/^[^*]/d'"'"' -e '"'"'s/* \(.*\)/ (\\1)/'"'"'
-}
-PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
-'
+# Set zsh prompt config
+ADD_PROMPT='#export PROMPT="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)"'
 
-# Check if .bashrc exists
-if [ -f ~/.bashrc ]; then
-    # Check if the content already exists in .bashrc
-    if grep -qF "export PS1" "/home/$SUDO_USER/.bashrc"; then
-        echo "Git branch prompt already exists in .bashrc"
-    else
-        # Append the content to .bashrc
-        echo "$git_prompt" >> "/home/$SUDO_USER/.bashrc"
-        echo "Git branch prompt added to .bashrc"
-    fi
+if ! grep -qF "PROMPT" "/home/$SUDO_USER/.zshrc"; then
+  echo "$ADD_PROMPT" >> "/home/$SUDO_USER/.zshrc"
+  echo "Prompt config added to .zshrc"
 else
-    echo ".bashrc file not found in home directory"
+  echo "Prompt config already in .zshrc"
 fi
 
-echo "Source .bashrc if you want to see the change or just open a new terminal"
+
+echo "Source .zshrc if you want to see the change or just open a new terminal"
 
 # Add terminator config 
-echo $.
 cp "$PWD/../resources/terminator/trees.jpg" "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/config" "/home/$SUDO_USER/.config/terminator/"
 
 # Set git config
 git config --global user.email "maxhol@hotmail.fr"
 git config --global user.name "Max"
+
+
+#Because of a bug in oh-my-zsh: https://github.com/ohmyzsh/ohmyzsh/issues/12328
+
+
+escape_sed() {
+    echo "$1" | sed -e 's/[]\/$*.^[]/\\&/g'
+}
+
+TARGET_FILE="/home/$SUDO_USER/.oh-my-zsh/themes/robbyrussell.zsh-theme"
+SEARCH_LINE='PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"'
+REPLACE_LINE='PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%~%{$reset_color%}"'
+
+ESCAPED_SEARCH_LINE=$(escape_sed "$SEARCH_LINE")
+ESCAPED_REPLACE_LINE=$(escape_sed "$REPLACE_LINE")
+
+if [ ! -f "$TARGET_FILE" ]; then
+  echo "File not found!"
+  exit 1
+fi
+
+sed -i "s/^$ESCAPED_SEARCH_LINE$/$ESCAPED_REPLACE_LINE/" "$TARGET_FILE"
 
 echo "Installation complete!"
