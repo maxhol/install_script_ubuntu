@@ -31,11 +31,15 @@ snap install bitwarden
 
 # Add aliases
 ALIAS_TO_ADD_1='alias pycharm="pycharm-community"'
+ALIAS_TO_ADD_2='alias python="python3"'
 
 # Add the line to .bashrc if it's not already there
 if ! grep -qF "$ALIAS_TO_ADD_1" "/home/$SUDO_USER/.bashrc"; then
   echo "$ALIAS_TO_ADD_1" >> "/home/$SUDO_USER/.bashrc"
-  echo "Added alias to .bashrc"
+  echo "pycharm alias added to .bashrc"
+elif ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.bashrc"; then
+  echo "$ALIAS_TO_ADD_2" >> "/home/$SUDO_USER/.bashrc"
+  echo "python alias added to .bashrc"
 else
   echo "Alias already exists in .bashrc"
 fi
