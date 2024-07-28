@@ -4,6 +4,7 @@
 apt update
 
 apt install -y \
-	espeak \
-	alsa-base \
-	alsa-utils
+	#espeak <- not sure if needed, uncomment if libespeak.so.1: cannot open shared object file: No such file or directory
+	alsa-utils \
+	pulseaudio \
+	ffmpeg
