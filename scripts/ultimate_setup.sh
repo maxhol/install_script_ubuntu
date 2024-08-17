@@ -14,13 +14,14 @@ apt install -y \
 	  nvtop \
 	  nautilus \
 	  zsh \
-	  #dep for gitkraken
 	  alsa-topology-conf \
 	  alsa-ucm-conf \
 	  libasound2 \
 	  libasound2-data \
 	  libgbm1 \
-	  libwayland-server0
+	  libwayland-server0 \
+	  cmake \
+	  python3-pip
 	  #----------------
 
 
