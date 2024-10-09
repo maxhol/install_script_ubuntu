@@ -83,6 +83,7 @@ fi
 echo "Source .zshrc if you want to see the change or just open a new terminal"
 
 # Add terminator config 
+mkdir -p "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/trees.jpg" "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/config" "/home/$SUDO_USER/.config/terminator/"
 
