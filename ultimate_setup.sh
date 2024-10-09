@@ -10,8 +10,7 @@ apt update
 apt install -y \
 	  terminator \
 	  ncdu \
-	  gitk \
-	  neovim
+	  gitk
 
 # Install PyCharm Community Edition using snap
 snap install pycharm-community --classic
