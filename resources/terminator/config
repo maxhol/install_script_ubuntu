@@ -3,6 +3,7 @@
 [profiles]
   [[default]]
     background_darkness = 0.68
+    scrollback_lines = -1
     background_type = image
     cursor_color = "#aaaaaa"
     background_image = /home/maxhol/.config/terminator/trees.jpg
