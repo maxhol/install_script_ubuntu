@@ -16,7 +16,7 @@ apt install -y \
 	  zsh \
 	  alsa-topology-conf \
 	  alsa-ucm-conf \
-	  libasound2 \
+	 # libasound2 \
 	  libasound2-data \
 	  libgbm1 \
 	  libwayland-server0 \
