@@ -23,6 +23,7 @@ apt install -y \
 	  cmake \
 	  python3-pip \
 	  sudo apt install brave-browser
+	  flameshot
 	  #----------------
 
 
