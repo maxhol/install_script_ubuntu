@@ -31,6 +31,8 @@ apt install -y \
 snap install pycharm-community --classic
 snap install gitkraken --classic
 snap install bitwarden
+snap install signal-desktop
+sudo snap install code --classic
 
 # Make zsh default shell 
 # Get the path to Zsh
