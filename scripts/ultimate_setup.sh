@@ -1,7 +1,15 @@
+#!/bin/bash
+
 if [ "$EUID" -ne 0 ]; then
 	  echo "Please run this script with sudo privileges"
 	    exit 1
 fi
+
+
+PS4='\[\e[34m\]+ ${BASH_SOURCE}:${LINENO}: \[\e[0m\]'
+
+# Add command line debbuging
+set -x
 
 # Update package lists
 apt update
@@ -23,6 +31,7 @@ apt install -y \
 	  cmake \
 	  python3-pip \
 	  sudo apt install brave-browser
+	  flameshot
 	  #----------------
 
 
@@ -30,6 +39,49 @@ apt install -y \
 snap install pycharm-community --classic
 snap install gitkraken --classic
 snap install bitwarden
+snap install signal-desktop
+sudo snap install code --classic
+
+SNAP_PATH='export PATH=$PATH:/snap/bin'
+
+# Add the line to .bashrc if it's not already there
+if ! grep -qF "$SNAP_PATH" "/home/$SUDO_USER/.zshrc"; then
+  echo "$SNAP_PATH" >> "/home/$SUDO_USER/.zshrc"
+  echo "pycharm alias added to .zshrc"
+else
+  echo "Alias already exists in .zshrc"
+fi
+
+
+
+
+# Install ROS2 and dependancies
+apt install -y curl gnupg2 lsb-release software-properties-common
+add-apt-repository universe
+locale-gen en_US en_US.UTF-8
+update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+locale
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+apt update && apt install -y ros-dev-tools
+apt -y upgrade
+apt install -y ros-jazzy-desktop
+
+
+SOURCE_TO_ADD='source /opt/ros/jazzy/setup.bash'
+
+
+# Add the line to .zshrc if it's not already there
+if ! grep -qF "$SOURCE_TO_ADD" "/home/$SUDO_USER/.zshrc"; then
+  echo "$SOURCE_TO_ADD" >> "/home/$SUDO_USER/.zshrc"
+  echo "ROS2 alias added to .zshrc"
+else
+  echo "ROS2 alias already exists in .zshrc"
+fi
+
+
+
 
 # Make zsh default shell 
 # Get the path to Zsh
@@ -61,8 +113,8 @@ ALIAS_TO_ADD_2='alias python="python3"'
 # Add the line to .bashrc if it's not already there
 if ! grep -qF "$ALIAS_TO_ADD_1" "/home/$SUDO_USER/.zshrc"; then
   echo "$ALIAS_TO_ADD_1" >> "/home/$SUDO_USER/.zshrc"
-  echo "pycharm alias added to .bashrc"
-elif ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.zshrc"; then
+  echo "pycharm alias added to .zshrc"
+if ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.zshrc"; then
   echo "$ALIAS_TO_ADD_2" >> "/home/$SUDO_USER/.zshrc"
   echo "python alias added to .zshrc"
 else
@@ -115,3 +167,7 @@ fi
 sed -i "s/^$ESCAPED_SEARCH_LINE$/$ESCAPED_REPLACE_LINE/" "$TARGET_FILE"
 
 echo "Installation complete!"
+
+# Remove commande line debugging
+set +x
+
