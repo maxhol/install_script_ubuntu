@@ -42,6 +42,19 @@ snap install bitwarden
 snap install signal-desktop
 sudo snap install code --classic
 
+SNAP_PATH='export PATH=$PATH:/snap/bin'
+
+# Add the line to .bashrc if it's not already there
+if ! grep -qF "$SNAP_PATH" "/home/$SUDO_USER/.zshrc"; then
+  echo "$SNAP_PATH" >> "/home/$SUDO_USER/.zshrc"
+  echo "pycharm alias added to .zshrc"
+else
+  echo "Alias already exists in .zshrc"
+fi
+
+
+
+
 # Install ROS2 and dependancies
 apt install -y curl gnupg2 lsb-release software-properties-common
 add-apt-repository universe
@@ -100,8 +113,8 @@ ALIAS_TO_ADD_2='alias python="python3"'
 # Add the line to .bashrc if it's not already there
 if ! grep -qF "$ALIAS_TO_ADD_1" "/home/$SUDO_USER/.zshrc"; then
   echo "$ALIAS_TO_ADD_1" >> "/home/$SUDO_USER/.zshrc"
-  echo "pycharm alias added to .bashrc"
-elif ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.zshrc"; then
+  echo "pycharm alias added to .zshrc"
+if ! grep -qF "$ALIAS_TO_ADD_2" "/home/$SUDO_USER/.zshrc"; then
   echo "$ALIAS_TO_ADD_2" >> "/home/$SUDO_USER/.zshrc"
   echo "python alias added to .zshrc"
 else
