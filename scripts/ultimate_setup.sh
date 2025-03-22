@@ -21,14 +21,14 @@ apt install -y \
 	  libgbm1 \
 	  libwayland-server0 \
 	  cmake \
-	  python3-pip
+	  python3-pip \
+	  sudo apt install brave-browser
 	  #----------------
 
 
 # Install PyCharm Community Edition using snap
 snap install pycharm-community --classic
 snap install gitkraken --classic
-snap install brave
 snap install bitwarden
 
 # Make zsh default shell 
@@ -86,7 +86,7 @@ echo "Source .zshrc if you want to see the change or just open a new terminal"
 mkdir -p "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/trees.jpg" "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/config" "/home/$SUDO_USER/.config/terminator/"
-chown $USER:$USER ~/.config/terminator/config
+chown -R $USER:$USER ~/.config/
 
 # Set git config
 git config --global user.email "maxhol@hotmail.fr"
