@@ -86,6 +86,7 @@ echo "Source .zshrc if you want to see the change or just open a new terminal"
 mkdir -p "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/trees.jpg" "/home/$SUDO_USER/.config/terminator/"
 cp "$PWD/../resources/terminator/config" "/home/$SUDO_USER/.config/terminator/"
+chown $USER:$USER ~/.config/terminator/config
 
 # Set git config
 git config --global user.email "maxhol@hotmail.fr"
