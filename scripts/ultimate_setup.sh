@@ -171,6 +171,14 @@ fi
 
 sed -i "s/^$ESCAPED_SEARCH_LINE$/$ESCAPED_REPLACE_LINE/" "$TARGET_FILE"
 
+# Clone personal repos and install required dependancies
+# Glados
+./glados_installer.sh
+# FuckNetflix
+# Pogo
+# Krokocrab
+# MangaTranslator
+
 echo "Installation complete!"
 
 # Remove commande line debugging
