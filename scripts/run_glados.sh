@@ -4,6 +4,7 @@
 cleanup() {
     echo "Stopping containers..."
     docker stop open-webui_with_ollama
+    docker rm open-webui_with_ollama
     echo "Containers stopped. Exiting."
     exit 0
 }
@@ -21,7 +22,7 @@ echo "Starting Open WebUI container with ollama..."
 #docker run -d --rm -p 8080:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:latest
 docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui_with_ollama --restart always ghcr.io/open-webui/open-webui:ollama
 
-echo "Both containers are running. Press CTRL+C to stop."
+echo "Container is running. PLese clonnect to http://localhost:3000/. Press CTRL+C to stop."
 
 # Keep the script running
 while true; do

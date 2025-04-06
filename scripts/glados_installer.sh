@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -x
+
+PS4='\[\e[32m\]+ ${BASH_SOURCE}:${LINENO}: \[\e[0m\]'
+
+
 # Update package list and install dependencies
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
@@ -20,6 +25,8 @@ sudo systemctl enable docker
 
 # Add current user to Docker group (optional, allows running Docker without sudo)
 sudo usermod -aG docker $USER
+# Necessary on WSL2
+sudo chown $USER:$USER /var/run/docker.sock
 
 # Install Ollama Docker
 #sudo docker pull ollama/ollama
@@ -40,7 +47,9 @@ sudo systemctl restart docker
 #sudo docker pull ghcr.io/open-webui/open-webui:latest
 
 #Install unique docker for OpenWebUI and Ollama
-udo docker pull ghcr.io/open-webui/open-webui:ollama
+sudo docker pull ghcr.io/open-webui/open-webui:ollama
 
 
-echo "Installation complete. Please log out and log back in for group changes to take effect."
+echo "Installation complete. Please log out and log back in for group changes to take effect."i
+
+set +x
