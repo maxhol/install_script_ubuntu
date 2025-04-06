@@ -139,7 +139,8 @@ if $INSTALL_DEV_TOOLS; then
 
 	# Install Oh-my-zsh
 	sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
+	apt install fzf
+	
 
 	# Add aliases
 	ALIAS_TO_ADD_1='alias pycharm="pycharm-community"'
