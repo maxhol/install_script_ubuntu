@@ -54,7 +54,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 
-PS4='\[\e[34m\]+ ${BASH_SOURCE}:${LINENO}: \[\e[0m\]'
+PS4='\[\e[32m\]+ ${BASH_SOURCE}:${LINENO}: \[\e[0m\]'
 
 # Add command line debbuging
 set -x
