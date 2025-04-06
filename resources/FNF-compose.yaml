@@ -1,0 +1,56 @@
+version: "2.1"
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+      # network_mode: 'host'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/jellyfin/config
+        target: /config
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/jellyfin/cache
+        target: /cache      
+      - type: bind
+        source: /mnt/g/Films-Series/films/
+        target: /movies
+      - type: bind
+        source: /mnt/g/Films-Series/tv_shows/
+        target: /tv_shows
+        read_only: true
+    ports:
+      - "8096:8096"
+      - "8920:8920"
+    restart: unless-stopped
+
+      # user: uid:gid
+      # Optional - extra fonts to be used during transcoding with subtitle burn-in
+      # - type: bind
+      #  source: /path/to/fonts
+      #  target: /usr/local/share/fonts/custom
+      #  read_only: true
+    # Optional - alternative address used for autodiscovery
+    # environment:
+    #  - JELLYFIN_PublishedServerUrl=http://example.com
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Europe/Paris
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/jellyseer/config
+        target: /app/config
+    restart: unless-stopped
+
