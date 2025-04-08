@@ -1,20 +1,20 @@
-version: "2.1"
 services:
   jellyfin:
-    image: jellyfin/jellyfin:latest
+    image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
-      # network_mode: 'host'
+    #network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
+      - gpus=all
     volumes:
       - type: bind
         source: /home/maxhol/ws/FuckNetflix/jellyfin/config
         target: /config
       - type: bind
         source: /home/maxhol/ws/FuckNetflix/jellyfin/cache
-        target: /cache      
+        target: /cache
       - type: bind
         source: /mnt/g/Films-Series/films/
         target: /movies
@@ -23,9 +23,20 @@ services:
         target: /tv_shows
         read_only: true
     ports:
-      - "8096:8096"
-      - "8920:8920"
+      - 8096:8096
+      - 8920:8920
+      - 1900:1900/udp 
+    deploy:
+      # Add this section
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
     restart: unless-stopped
+networks: {}
 
       # user: uid:gid
       # Optional - extra fonts to be used during transcoding with subtitle burn-in
