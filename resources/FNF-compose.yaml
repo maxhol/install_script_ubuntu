@@ -36,7 +36,7 @@ services:
               capabilities:
                 - gpu
     restart: unless-stopped
-networks: {}
+# networks: {}
 
       # user: uid:gid
       # Optional - extra fonts to be used during transcoding with subtitle burn-in
@@ -64,4 +64,129 @@ networks: {}
         source: /home/maxhol/ws/FuckNetflix/jellyseer/config
         target: /app/config
     restart: unless-stopped
-
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Prowlarr/config
+        target: /config
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Prowlarr/backup
+        target: /data/Backup
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Downloads
+        target: /data/downloads
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+      - arrs
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Sonarr/config
+        target: /config
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Sonarr/backup
+        target: /data/Backup
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Sonarr/tvshows
+        target: /data/tvshows
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Downloads
+        target: /data/downloads    
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    networks:
+      - arrs
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Radarr/config
+        target: /config
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Radarr/backup
+        target: /data/Backup
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Radarr/movies
+        target: /data/movies
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Downloads
+        target: /data/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    networks:
+      - arrs
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Lidarr/config
+        target: /config
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Lidarr/backup
+        target: /data/Backup
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Lidarr/music
+        target: /data/musicfolder
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Downloads
+        target: /data/downloads
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+    networks:
+      - arrs
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Readarr/config
+        target: /config
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Readarr/books
+        target: /data/books
+      - type: bind
+        source: /home/maxhol/ws/FuckNetflix/arrs/Downloads
+        target: /data/downloads
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+    networks:
+      - arrs
+networks:
+  arrs:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 173.25.0.0/16
+          gateway: 173.25.0.1
